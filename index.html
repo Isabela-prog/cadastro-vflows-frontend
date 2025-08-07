@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Fornecedor/Produto</title>
+</head>
+<body>
+    <!-- Div externa da pág  -->
+    <div id="cadastro-fornecedor-produto">
+        <h1>CADASTRO FORNECEDOR/PRODUTO</h1>
+
+        <!-- seção que irá abrager os dados do fornecedor  -->
+        <section id="dados-fornecedor">
+            <!-- optei pelo fieldset para não precisar criar uma nova div
+            o fieldset agrupa visualmente labels de um formulario -->
+            <fieldset>
+                <legend>Dados do Fornecedor</legend>
+
+                <!-- formulário para cadastro dos dados do fornecedor com cada campo requisitado e a sua obrigatoriedade atarvés do required -->
+                <form id="form-fornecedor">
+
+                    <div id="form-row">
+                        <label for="razao-social">Razão Social</label>
+                        <input type="text" id="razao-social" name="razaoSocial" required />
+                        
+                        <label for="cnpj">CNPJ</label>
+                        <!-- placeholder colocado para o usuário saber o formato que deverá digitar o CNPJ/ Se houver tempo, colocar o formato de forma automática no campo -->
+                        <input type="text" id="cnpj" name="cnpj" required placeholder="00.000.000/0000-00"/>
+                    </div>
+
+                    <div id="form-row">
+                        <label for="nome-fantasia">Nome Fantasia</label>
+                        <input type="text" id="nome-fantasia" name="nomeFantasia" required />
+                        
+                        <label for="inscricao-estadual">Inscrição Estadual</label>
+                        <input type="text" id="inscricao-estadual" name="inscricaoEstadual" />
+                    </div>
+
+                    <div id="form-row">
+                        <label for="cep">CEP</label>
+                        <!-- placeholder colocado para o usuário saber o formato que deverá digitar o CNPJ/ Se houver tempo, colocar o formato de forma automática no campo -->
+                        <input type="text" id="cep" name="cep" required placeholder="00.000.000/0000-00"/>
+                        
+                            <label for="inscricao-municipal">Inscrição Municipal</label>
+                        <input type="text" id="inscricao-municipal" name="inscricaoMunicipal" />
+                    </div>
+
+                    <div id="form-row">
+                        <label for="endereco">Endereço</label>
+                        <input type="text" id="endereco" name="endereco" />
+                    
+                        <label for="numero">Número</label>
+                        <input type="text" id="numero" name="numero" />
+                    </div>
+
+                    <div id="form-group">
+                        <label for="complemento">Complemento</label>
+                        <input type="text" id="complemento" name="complemento" />
+                    </div>
+
+                    <div id="form-row">
+                        <label for="bairro">Bairro</label>
+                        <input type="text" id="bairro" name="bairro" />
+
+                        <label for="municipio">Município</label>
+                        <input type="text" id="municipio" name="municipio" />
+
+                         <label for="estado">Estado</label>
+                        <input type="text" id="estado" name="estado" />
+                    </div>
+
+                    <div id="form-row">
+                        <label for="contato">Nome da Pessoa de Contato</label>
+                        <input type="text" id="contato" name="contato" required />
+
+                        <label for="telefone">Telefone</label>
+                        <input type="text" id="telefone" name="telefone" required />
+                        
+                        <label for="email">E-mail</label>
+                        <input type="text" id="email" name="email" />
+                    </div>
+                </form>
+            </fieldset>
+        </section>
+
+        <section id="produtos">
+            <fieldset>
+                <legend>Produtos</legend>
+
+                <div class="produto-unitario">
+                    <h3>Produto -1 </h3>
+                    <label>Produto</label>
+                    <input type="text" name="produto" required />
+
+                    <label>UND. Medida</label>
+                    <!-- utilizar select para criar a lista de unidades de medida  -->
+                    <select name="unidadeMedida" required>
+                        <option value="">Selecione unidade</option>
+                        <option value="un">Unidade(s)</option>
+                        <option value="kg">Quilograma(s)</option>
+                        <option value="l">Litro(s)</option>
+                    </select>
+
+                    <label>QTD. em Estoque</label>
+                    <input type="number" name="quantidade" required>
+
+                    <label>Valor Unitário</label required>
+                    <input type="number" name="valorUnitario" step="0.01">
+
+                    <label>Valor Total</label>
+                    <!-- o readonly tornará o campo não editável pelo usuário  -->
+                    <input type="text" name="valorTotal" readonly>
+
+                    <!-- botão para adc um novo produto  -->
+                     <button type="button" id="adicionar-produto">Adcionar Produto</button>
+                </div>
+            </fieldset>
+        </section>
+
+        <!-- seção de Anexos  -->
+         <section id="anexos">
+            <fieldset>
+                <legend>Anexos</legend>
+
+                <div class="lista-anexos">
+                    <div class="item-anexo">Documento Anexo</div>
+                </div>
+                <!-- botão de adc anexo  -->
+                <button type= "button" id="adicionar-anexo">Incluir Anexo</button>
+            </fieldset>
+         </section>
+        
+        <div class="envio-form">
+            <!-- botão de adc fornecedor  -->
+            <button type= "submit" id="salvar-fornecedor">Salvar Fornecedor</button>
+        </div> 
+    </div>
+</body>
+</html>
