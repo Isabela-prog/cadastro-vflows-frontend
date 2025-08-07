@@ -43,10 +43,15 @@ Este projeto foi desenvolvido como parte do processo seletivo para estágio na *
     - [x] estruturar no index.html a section Dados do Fornecedor
     - [x] estruturar no index.html a section Produtos
     - [x] estruturar no index.html a section Anexos
-    - [] componentizar produto unitário
-    - [] criar DOM do produto unitário
+    - [x] componentizar produto unitário
+    - [x] criar DOM do produto unitário
+      - [x] quando a pag é redenrizada criar um form de produto
+      - [x] criar um novo form do produto sempre que o botão de adc for clicado
+      - [x] icone da lixeira exclui o produto - atualiza o número dos outros produtos que ficaram
+      - [x] valor total ser preenchido automaticamente a partir dos valores fornecidos de quantidade e valor unitário
   
 - Spring 2
+  - [] consumo API CEP
   - [] componentizar Anexos
   - [] criar DOM de Anexos
   - [] estilizar pag

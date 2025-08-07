@@ -40,7 +40,7 @@
                     <div id="form-row">
                         <label for="cep">CEP</label>
                         <!-- placeholder colocado para o usuário saber o formato que deverá digitar o CNPJ/ Se houver tempo, colocar o formato de forma automática no campo -->
-                        <input type="text" id="cep" name="cep" required placeholder="00.000.000/0000-00"/>
+                        <input type="text" id="cep" name="cep" required placeholder="00.000-000"/>
                         
                             <label for="inscricao-municipal">Inscrição Municipal</label>
                         <input type="text" id="inscricao-municipal" name="inscricaoMunicipal" />
@@ -85,37 +85,8 @@
         </section>
 
         <section id="produtos">
-            <fieldset>
-                <legend>Produtos</legend>
-
-                <div class="produto-unitario">
-                    <h3>Produto -1 </h3>
-                    <label>Produto</label>
-                    <input type="text" name="produto" required />
-
-                    <label>UND. Medida</label>
-                    <!-- utilizar select para criar a lista de unidades de medida  -->
-                    <select name="unidadeMedida" required>
-                        <option value="">Selecione unidade</option>
-                        <option value="un">Unidade(s)</option>
-                        <option value="kg">Quilograma(s)</option>
-                        <option value="l">Litro(s)</option>
-                    </select>
-
-                    <label>QTD. em Estoque</label>
-                    <input type="number" name="quantidade" required>
-
-                    <label>Valor Unitário</label required>
-                    <input type="number" name="valorUnitario" step="0.01">
-
-                    <label>Valor Total</label>
-                    <!-- o readonly tornará o campo não editável pelo usuário  -->
-                    <input type="text" name="valorTotal" readonly>
-
-                    <!-- botão para adc um novo produto  -->
-                     <button type="button" id="adicionar-produto">Adcionar Produto</button>
-                </div>
-            </fieldset>
+            <div id="produtos-container"></div>
+            <button type="button" id="adicionar-produto">Adcionar Produto</button>
         </section>
 
         <!-- seção de Anexos  -->
@@ -136,5 +107,7 @@
             <button type= "submit" id="salvar-fornecedor">Salvar Fornecedor</button>
         </div> 
     </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
