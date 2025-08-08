@@ -38,17 +38,26 @@ Este projeto foi desenvolvido como parte do processo seletivo para estágio na *
 
 ## Estrutura do Projeto
 
-/
 ├── assets/
+
 │ └── img/ # imagens usadas no projeto
+
 ├── components/
+
 │ ├── anexo.html # componente de anexo
+
 │ └── produto.html # componente de produto
+
 ├── styles/
+
 │ └── style.css # arquivo  de estilos CSS
+
 ├── index.html # página principal do projeto
+
 ├── script.js #  lógica da aplicação
+
 └── README.md # documentação do projeto
+
 
 ## Organização do projeto
 
