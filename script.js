@@ -1,61 +1,48 @@
+// ===============================
+// DOM do Produto
+// ===============================
 let contadorProdutos = 1;
 
-// Função para adicionar formulário de produto
 async function adicionarProduto() {
   try {
-    // buscar o componente produto.html
     const response = await fetch("components/produto.html");
     if (!response.ok) throw new Error(`Erro ao carregar componente: ${response.statusText}`);
 
     const html = await response.text();
-    // Criar container temporário para converter o HTML em elemento DOM
     const wrapper = document.createElement("div");
     wrapper.innerHTML = html.trim();
-
-    // Pega o elemento .produto-unitario
     const produto = wrapper.firstElementChild;
 
-    // Atualizar o título com o número do produto
     const titulo = produto.querySelector("h3");
     titulo.textContent = `Produto - ${contadorProdutos}`;
 
-     // remover ao clicar na lixeira
     const botaoRemover = produto.querySelector(".remover-produto");
     botaoRemover.addEventListener("click", () => {
       produto.remove();
       atualizarH3Produtos();
     });
 
-    // calcular o valor total
-    // selecionar os inputs
     const quantidadeInput = produto.querySelector('input[name="quantidade"]');
     const valorUnitarioInput = produto.querySelector('input[name="valorUnitario"]');
     const valorTotalInput = produto.querySelector('input[name="valorTotal"]');
 
     const atualizarValorTotal = () => {
-      // converter o texto para numero decimal ou utilizar zero (para não gerar erros)
       const quantidade = parseFloat(quantidadeInput.value) || 0;
       const valorUnitario = parseFloat(valorUnitarioInput.value) || 0;
-      // realizar a operação
       const total = quantidade * valorUnitario;
-      // inserir o valor, com duas casas decimais, no local
       valorTotalInput.value = total.toFixed(2);
     };
 
-    // sempre que o usuário alterar algum valor dentro dos respectivos campos, a função é acionada
     quantidadeInput.addEventListener("input", atualizarValorTotal);
     valorUnitarioInput.addEventListener("input", atualizarValorTotal);
 
-    // inserir produto no container que está na index
     document.getElementById("produtos-container").appendChild(produto);
-
     contadorProdutos++;
   } catch (error) {
     console.error("Erro ao adicionar produto:", error);
   }
 }
 
-// atualiza os títulos o h3 do produto sempre que um for removido
 function atualizarH3Produtos() {
   const produtos = document.querySelectorAll(".produto-unitario");
   produtos.forEach((produto, index) => {
@@ -63,17 +50,96 @@ function atualizarH3Produtos() {
     titulo.textContent = `Produto - ${index + 1}`;
   });
 
-  // atualiza o contador global para não adc número repetido
   contadorProdutos = produtos.length + 1;
 }
 
-
-// ao carregar a página, já adiciona 1 formulário de produto
 window.addEventListener("DOMContentLoaded", () => {
   adicionarProduto();
 });
 
-// listener do botão para adicionar mais produtos
 document.getElementById("adicionar-produto").addEventListener("click", () => {
   adicionarProduto();
 });
+
+// ===============================
+// DOM do Anexo
+// ===============================
+
+let contadorAnexos = 1; 
+// Lista em memória com os anexos
+let listaDeAnexos = [];
+
+const listaAnexosContainer = document.querySelector('.lista-anexos');
+const botaoAdicionarAnexo = document.getElementById('adicionar-anexo');
+
+
+botaoAdicionarAnexo.addEventListener('click', () => {
+  // criar um input novo na memória e tranformá-lo em seletor de files (de qlqr tipo - /)
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '*/*';
+
+  // quando o usuário escolhe o arq ele dispara
+  input.addEventListener('change', (event) => {
+    
+    // pegar arq selecionado
+    const arquivo = event.target.files[0];
+    if (!arquivo) return;
+
+    // adicionar o arq na lista memória
+    listaDeAnexos.push({
+      id: Date.now(),
+      nome: arquivo.name,
+      blob: arquivo
+    });
+
+    //salvarAnexosNoSessionStorage();
+    renderizarListaAnexos();
+  });
+
+  // fazer a janela de escolha do arq aparecer
+  input.click();
+  
+});
+
+// recriar todos os anexos na tela com a numeração atualizada
+function renderizarListaAnexos() {
+  // limpar anexos atuais
+  listaAnexosContainer.innerHTML = ""; 
+  // faz um for para percorrer anexos e montá-los
+  for (let index = 0; index < listaDeAnexos.length; index++) {
+    const anexo = listaDeAnexos[index];
+    
+    fetch("components/anexo.html")
+      .then(response => response.text())
+      .then(html => {
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = html.trim();
+        const novoAnexo = wrapper.firstElementChild;
+
+    // título dinâmico
+    novoAnexo.querySelector(".nome-doc").textContent = `Documento Anexo ${index + 1}`;
+
+    // visualizar (download)
+    novoAnexo.querySelector(".visualizar-doc").addEventListener("click", () => {
+      const url = URL.createObjectURL(anexo.blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = anexo.nome;
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // remover
+    novoAnexo.querySelector(".remover-doc").addEventListener("click", () => {
+      listaDeAnexos = listaDeAnexos.filter((a) => a.id !== anexo.id);
+      renderizarListaAnexos();
+    });
+
+    listaAnexosContainer.appendChild(novoAnexo);
+  });
+}
+  contadorAnexos = listaDeAnexos.length + 1;
+}
+
+document.getElementById("adicionar-anexo").addEventListener("click", adicionarAnexo);

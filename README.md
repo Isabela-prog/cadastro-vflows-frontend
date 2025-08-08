@@ -31,7 +31,9 @@ Este projeto foi desenvolvido como parte do processo seletivo para estágio na *
   - [] Tabela de anexos:
     - [] Visualização e download de arquivo selecionado (armazenado em memória - blob e session storage)
     - [] Remoção de arquivo (doc deve ser excluído da memória)
-    - [] Arquivo salvo em Json (mostrar modal de loading de envio)
+  
+  - [] Arquivo fornecedor salvo em Json (mostrar modal de loading de envio)
+
 
 ## Estrutura do Projeto
 
@@ -52,8 +54,8 @@ Este projeto foi desenvolvido como parte do processo seletivo para estágio na *
   
 - Spring 2
   - [] consumo API CEP
-  - [] componentizar Anexos
-  - [] criar DOM de Anexos
+  - [x] componentizar Anexos
+  - [x] criar DOM de Anexos
   - [] estilizar pag
   
 ### Como executar
