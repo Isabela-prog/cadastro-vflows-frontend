@@ -31,11 +31,24 @@ Este projeto foi desenvolvido como parte do processo seletivo para estágio na *
   - [x] Tabela de anexos:
     - [x] Visualização e download de arquivo selecionado (armazenado em memória - blob e session storage)
     - [x] Remoção de arquivo (doc deve ser excluído da memória)
+    - [x] Adaptar o DOM do script.js para jQuery
   
-  - [] Arquivo fornecedor salvo em Json (mostrar modal de loading de envio) - download
+  - [x] Arquivo fornecedor salvo em Json (mostrar modal de loading de envio) - download
 
 
 ## Estrutura do Projeto
+
+/
+├── assets/
+│ └── img/ # imagens usadas no projeto
+├── components/
+│ ├── anexo.html # componente de anexo
+│ └── produto.html # componente de produto
+├── styles/
+│ └── style.css # arquivo  de estilos CSS
+├── index.html # página principal do projeto
+├── script.js #  lógica da aplicação
+└── README.md # documentação do projeto
 
 ## Organização do projeto
 
@@ -58,7 +71,23 @@ Este projeto foi desenvolvido como parte do processo seletivo para estágio na *
   - [x] criar DOM de Anexos
   - [x] botão de salvar fonecedor
   - [x] modal de loading
-  - [] estilizar pag
+  - [x] estilizar pag
+  - [ ] modificar script.js para JQuery
   
-### Como executar
+## Considerações
+Durante a execução deste teste, senti que consegui consolidar melhor meus conhecimentos em manipulação de blobs, uso do sessionStorage e na dinâmica do modal de loading.
+
+### Principais desafios que encontrei foram:
+- Modal de loading:
+Inicialmente, o modal não aparecia durante o processo de download e não apresentava erros no console. Após pesquisas, identifiquei que isso acontecia devido a velocidade com que o download era executado. Pararesolver, utilizei a função setTimeout para garantir a exibição correta do modal antes do início do download.
+
+- Uso do jQuery:
+Como ainda não havia trabalhado com jQuery para manipulação dinâmica dos elementos, preferi inicialmente resolver o teste utilizando apenas o DOM nativo. Depois adaptei o código para jQuery, mas encontrei dificuldades na integração com o fetch e precisei investir bastante tempo em pesquisa para conversão dos seletores.
+
+### O que eu melhoria:
+- Iniciaria diretamente a manipulação dinâmica dos elementos utilizando jQuery, o que teria tornado o desenvolvimento mais produtivo.
+- Aplicaria um replace no blob para remover informações desnecessárias, como data, otimizando o tamanho do arquivo.
+- Aperfeiçoaria o CSS para deixá-lo mais alinhado ao layout original fornecido.
+  
+## Como executar
 O arquivo index.html pode ser aberto diretamente no navegador ou ser aberto utilizando a extensão Live Server (no VSCode) para o teste.

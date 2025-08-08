@@ -76,10 +76,10 @@
                         <input type="text" id="contato" name="contato" required />
 
                         <label for="telefone">Telefone</label>
-                        <input type="text" id="telefone" name="telefone" required />
+                        <input type="text" id="telefone" name="telefone" placeholder="+5511XXXXXXXX" required />
                         
                         <label for="email">E-mail</label>
-                        <input type="text" id="email" name="email" />
+                        <input type="text" id="email" name="email" placeholder="email@email.com" required/>
                     </div>
                 </form>
             </fieldset>
@@ -109,11 +109,12 @@
         </div> 
     </div>
 
-<!-- Modal de Loading (simples) -->
-<div id="modal-loading" class="modal-loading hidden">
-Enviando dados, aguarde...
-</div>
+    <!-- Modal de Loading (simples) -->
+    <div id="modal-loading" class="modal-loading hidden">
+    Enviando dados, aguarde...
+    </div>
 
-<script src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

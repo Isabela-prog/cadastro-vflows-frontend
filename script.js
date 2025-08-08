@@ -1,218 +1,205 @@
 // ===============================
 // DOM do Produto
 // ===============================
+
+// contador dos produtos
 let contadorProdutos = 1;
 
 async function adicionarProduto() {
-
+  // fazer a requisição para carregar o HTML do produto
   const response = await fetch("components/produto.html");
   if (!response.ok) throw new Error(`Erro ao carregar componente: ${response.statusText}`);
 
+  // pegar o conteúdo HTML, criar o wrapper para a manipulação
   const html = await response.text();
-  const wrapper = document.createElement("div");
-  wrapper.innerHTML = html.trim();
-  const produto = wrapper.firstElementChild;
+  const $wrapper = $("<div>").html(html.trim());
+  const $produto = $wrapper.children().first();
 
-  const titulo = produto.querySelector("h3");
-  titulo.textContent = `Produto - ${contadorProdutos}`;
+  // atualizar a numeração do h3
+  const $titulo = $produto.find("h3");
+  $titulo.text(`Produto - ${contadorProdutos}`);
 
-  const botaoRemover = produto.querySelector(".remover-produto");
-  botaoRemover.addEventListener("click", () => {
-    produto.remove();
+  // remover o produto com o click do botão
+  const $botaoRemover = $produto.find(".remover-produto");
+  $botaoRemover.on("click", () => {
+    $produto.remove();
+    // atualizar as numerações dos produtos restantes após remoção
     atualizarH3Produtos();
   });
 
-  const quantidadeInput = produto.querySelector('input[name="quantidade"]');
-  const valorUnitarioInput = produto.querySelector('input[name="valorUnitario"]');
-  const valorTotalInput = produto.querySelector('input[name="valorTotal"]');
+  // selecionar inputs
+  const $quantidadeInput = $produto.find('input[name="quantidade"]');
+  const $valorUnitarioInput = $produto.find('input[name="valorUnitario"]');
+  const $valorTotalInput = $produto.find('input[name="valorTotal"]');
 
+  // atualizar o valor total multiplicando quantidade x valor unitário
   const atualizarValorTotal = () => {
-    const quantidade = parseFloat(quantidadeInput.value) || 0;
-    const valorUnitario = parseFloat(valorUnitarioInput.value) || 0;
+    const quantidade = parseFloat($quantidadeInput.val()) || 0;
+    const valorUnitario = parseFloat($valorUnitarioInput.val()) || 0;
     const total = quantidade * valorUnitario;
-    valorTotalInput.value = total.toFixed(2);
+    $valorTotalInput.val(total.toFixed(2));
   };
 
-  quantidadeInput.addEventListener("input", atualizarValorTotal);
-  valorUnitarioInput.addEventListener("input", atualizarValorTotal);
+  // atualizar o valor total qd a quantidade ou valor unitário mudarem
+  $quantidadeInput.on("input", atualizarValorTotal);
+  $valorUnitarioInput.on("input", atualizarValorTotal);
 
-  document.getElementById("produtos-container").appendChild(produto);
+  // adicionar ao container de produtos na página
+  $("#produtos-container").append($produto);
   contadorProdutos++;
 }
 
+//  atualizar os títulos h3 dos produtos com a numeração correta
 function atualizarH3Produtos() {
-  const produtos = document.querySelectorAll(".produto-unitario");
-  produtos.forEach((produto, index) => {
-    const titulo = produto.querySelector("h3");
-    titulo.textContent = `Produto - ${index + 1}`;
+  $(".produto-unitario").each(function(index) {
+    $(this).find("h3").text(`Produto - ${index + 1}`);
   });
-
-  contadorProdutos = produtos.length + 1;
+  contadorProdutos = $(".produto-unitario").length + 1;
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+// depois do DOM carregar, adiciona sempre um produto incial
+$(document).ready(() => {
   adicionarProduto();
-});
 
-document.getElementById("adicionar-produto").addEventListener("click", () => {
-  adicionarProduto();
+  $("#adicionar-produto").on("click", () => {
+    adicionarProduto();
+  });
 });
 
 // ===============================
 // DOM do Anexo
 // ===============================
 
-let contadorAnexos = 1; 
-// Lista em memória com os anexos
+let contadorAnexos = 1;
+// guardar os anexos em memória
 let listaDeAnexos = [];
 
-const listaAnexosContainer = document.querySelector('.lista-anexos');
-const botaoAdicionarAnexo = document.getElementById('adicionar-anexo');
+const $listaAnexosContainer = $(".lista-anexos");
+const $botaoAdicionarAnexo = $("#adicionar-anexo");
 
+$botaoAdicionarAnexo.on("click", () => {
+  // criar input file temporário
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "*/*";
 
-botaoAdicionarAnexo.addEventListener('click', () => {
-  // criar um input novo na memória e tranformá-lo em seletor de files (de qlqr tipo - /)
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '*/*';
-
-  // quando o usuário escolhe o arq ele dispara
-  input.addEventListener('change', (event) => {
-    
-    // pegar arq selecionado
+  // quando o usuário selecionar um arquivo, ele será lido e convertido para base64
+  input.addEventListener("change", (event) => {
     const arquivo = event.target.files[0];
     if (!arquivo) return;
 
-    // salvar arq na lista e já converter para base64
     const reader = new FileReader();
     reader.onload = () => {
       listaDeAnexos.push({
-        id: Date.now(),
+        id: Date.now(), 
         nome: arquivo.name,
         blob: arquivo,
-        base64: reader.result // já salva o base64 aqui!
+        base64: reader.result
       });
 
-    //salvarAnexosNoSessionStorage();
-    renderizarListaAnexos();
+      renderizarListaAnexos();
     };
     reader.readAsDataURL(arquivo);
   });
 
-  // fazer a janela de escolha do arq aparecer
+  // abrir o seletor de arq
   input.click();
-  
 });
 
-// recriar todos os anexos na tela com a numeração atualizada
 function renderizarListaAnexos() {
-  // limpar anexos atuais
-  listaAnexosContainer.innerHTML = ""; 
-  // faz um for para percorrer anexos e montá-los
-  for (let index = 0; index < listaDeAnexos.length; index++) {
-    const anexo = listaDeAnexos[index];
-    
+  $listaAnexosContainer.empty();
+
+  listaDeAnexos.forEach((anexo, index) => {
     fetch("components/anexo.html")
       .then(response => response.text())
       .then(html => {
-        const wrapper = document.createElement("div");
-        wrapper.innerHTML = html.trim();
-        const novoAnexo = wrapper.firstElementChild;
+        const $wrapper = $("<div>").html(html.trim());
+        const $novoAnexo = $wrapper.children().first();
 
-    // título dinâmico
-    novoAnexo.querySelector(".nome-doc").textContent = `Documento Anexo ${index + 1}`;
+        // atualizar o título do anexo
+        $novoAnexo.find(".nome-doc").text(`Documento Anexo ${index + 1}`);
 
-    // visualizar (download)
-    novoAnexo.querySelector(".visualizar-doc").addEventListener("click", () => {
-      const url = URL.createObjectURL(anexo.blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = anexo.nome;
-      link.click();
-      URL.revokeObjectURL(url);
-    });
+        // visualizar o anexo ao clicar no botão, fazendo download
+        $novoAnexo.find(".visualizar-doc").on("click", () => {
+          const url = URL.createObjectURL(anexo.blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = anexo.nome;
+          link.click();
+          URL.revokeObjectURL(url);
+        });
 
-    // remover
-    novoAnexo.querySelector(".remover-doc").addEventListener("click", () => {
-      listaDeAnexos = listaDeAnexos.filter((a) => a.id !== anexo.id);
-      renderizarListaAnexos();
-    });
+        // remover o anexo da lista e atualizar
+        $novoAnexo.find(".remover-doc").on("click", () => {
+          listaDeAnexos = listaDeAnexos.filter(a => a.id !== anexo.id);
+          renderizarListaAnexos();
+        });
 
-    listaAnexosContainer.appendChild(novoAnexo);
+        $listaAnexosContainer.append($novoAnexo);
+      });
   });
-}
+
   contadorAnexos = listaDeAnexos.length + 1;
 }
 
 // ===============================
-// Consumo API via CEP 
+// Consumo API via CEP
 // ===============================
-document.addEventListener("DOMContentLoaded", () => {
-  const cepInput = document.getElementById("cep");
-  const enderecoInput = document.getElementById("endereco");
-  const bairroInput = document.getElementById("bairro");
-  const municipioInput = document.getElementById("municipio");
-  const estadoInput = document.getElementById("estado");
 
+$(document).ready(() => {
+  const $cepInput = $("#cep");
+  const $enderecoInput = $("#endereco");
+  const $bairroInput = $("#bairro");
+  const $municipioInput = $("#municipio");
+  const $estadoInput = $("#estado");
+
+  // fazer a requisição para a API ViaCEP e preenche os campos do endereço
   const buscarEndereco = async (cep) => {
-    // remover caractéres que não sejam números
     const cepPuro = String(cep).replace(/\D/g, "");
-    // verificar se tem 8 dígitos
-    if (cepPuro.length !== 8) {
-      return;
-    }
+    if (cepPuro.length !== 8) return;
 
-    // consumo da API
     const url = `https://viacep.com.br/ws/${cepPuro}/json/`;
 
-    // fetch faz a requisição
     const response = await fetch(url);
+    if (!response.ok) return;
 
-    if (!response.ok) {
-      return;
-    }
-
-    // converter a resposta da API para Json
     const data = await response.json();
 
-    // preencher os campos
-    enderecoInput.value = data.logradouro || "";
-    bairroInput.value = data.bairro || "";
-    municipioInput.value = data.localidade || "";
-     estadoInput.value = data.uf || "";
+    $enderecoInput.val(data.logradouro || "");
+    $bairroInput.val(data.bairro || "");
+    $municipioInput.val(data.localidade || "");
+    $estadoInput.val(data.uf || "");
   };
 
-  // chama a API após o usuário digitar 8 dígitos
-  cepInput.addEventListener("input", () => {
-   const cepLimpo = cepInput.value.replace(/\D/g, "");
+  // apenas com o CEP completo (8 dígitos), chama a função
+  $cepInput.on("input", () => {
+    const cepLimpo = $cepInput.val().replace(/\D/g, "");
     if (cepLimpo.length === 8) {
-      buscarEndereco(cepInput.value);
+      buscarEndereco($cepInput.val());
     }
   });
-
 });
 
 // ===============================
 // Gerar e baixar JSON com todos os dados
 // ===============================
 
-document.getElementById("salvar-fornecedor").addEventListener("click", () => {
-  
-  // só poderá fazer o download do JSON se houver pelo menos um anexo
+$("#salvar-fornecedor").on("click", () => {
+  // verificar se há pelo menos 1 anexo para continuar
   if (listaDeAnexos.length === 0) {
     alert("Adicione ao menos um anexo antes de salvar o fornecedor!");
     return;
   }
 
-  // dar inicio ao modal
+  // exibir o modal de loading
   mostrarModalLoading();
 
-  // para dar tempo do modal aparecer antes do download ser feito
+  // timeout para garantir que o modal aparece antes do processamento
   setTimeout(() => {
-    const form = document.getElementById("form-fornecedor");
+    const form = $("#form-fornecedor")[0];
     const formData = new FormData(form);
 
-    // capturar campos do fornecedor
+    // dados do fornecedor
     const fornecedor = {
       razaoSocial: formData.get("razaoSocial"),
       nomeFantasia: formData.get("nomeFantasia"),
@@ -224,42 +211,40 @@ document.getElementById("salvar-fornecedor").addEventListener("click", () => {
       emailContato: formData.get("email")
     };
 
-    // capturar campos do produtos
+    // dados dos produtos 
     const produtos = [];
-    document.querySelectorAll(".produto-unitario").forEach((produtoEl, index) => {
+    $(".produto-unitario").each(function(index) {
+      const $produto = $(this);
       produtos.push({
         indice: index + 1,
-        descricaoProduto: produtoEl.querySelector('input[name="descricaoProduto"]').value,
-        unidadeMedida: produtoEl.querySelector('select[name="unidadeMedida"]').value,
-        qtdeEstoque: produtoEl.querySelector('input[name="quantidade"]').value,
-        valorUnitario: produtoEl.querySelector('input[name="valorUnitario"]').value,
-        valorTotal: produtoEl.querySelector('input[name="valorTotal"]').value
+        descricaoProduto: $produto.find('input[name="descricaoProduto"]').val(),
+        unidadeMedida: $produto.find('select[name="unidadeMedida"]').val(),
+        qtdeEstoque: $produto.find('input[name="quantidade"]').val(),
+        valorUnitario: $produto.find('input[name="valorUnitario"]').val(),
+        valorTotal: $produto.find('input[name="valorTotal"]').val()
       });
     });
 
-    // captura campos do anexo, aproveitando a listaDeAnexos
-    const anexos = listaDeAnexos.map((anexo, index) => {
-      return {
-        indice: index + 1,
-        nomeArquivo: anexo.nome,
-        blobArquivo: anexo.base64
-      };
-    });
+    // dados dos anexos armazenados na lista
+    const anexos = listaDeAnexos.map((anexo, index) => ({
+      indice: index + 1,
+      nomeArquivo: anexo.nome,
+      blobArquivo: anexo.base64
+    }));
 
-    // juntar dados em um objeto final
+    // juntar todos os dados em um objeto final
     const dadosFinal = {
       ...fornecedor,
       produtos,
       anexos
     };
 
-    // baixar arq Json
-    // converter o objeto em string JSON
-    const jsonString = JSON.stringify(dadosFinal, null, 2); 
-    // criar um blob
+    // converter o objeto em JSON formatado e criar o blob
+    const jsonString = JSON.stringify(dadosFinal, null, 2);
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
 
+    // link temporário para download e disparar o clique
     const link = document.createElement("a");
     link.href = url;
     link.download = `fornecedor_${fornecedor.razaoSocial || "dados"}.json`;
@@ -268,15 +253,15 @@ document.getElementById("salvar-fornecedor").addEventListener("click", () => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
+    // fechar o modal de loading após finalizar
     esconderModalLoading();
   }, 500);
 });
 
-
 function mostrarModalLoading() {
-  document.getElementById("modal-loading").classList.remove("hidden");
+  $("#modal-loading").removeClass("hidden");
 }
 
 function esconderModalLoading() {
-  document.getElementById("modal-loading").classList.add("hidden");
+  $("#modal-loading").addClass("hidden");
 }
