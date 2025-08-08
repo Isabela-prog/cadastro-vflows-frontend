@@ -62,7 +62,7 @@ Este projeto foi desenvolvido como parte do processo seletivo para estágio na *
 ## Organização do projeto
 
 - Spring 1
-    - [x] portifólio
+    - [x] rascunho do projeto
     - [x] divisão das DIVs e sections
     - [x] estruturar no index.html a section Dados do Fornecedor
     - [x] estruturar no index.html a section Produtos
