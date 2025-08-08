@@ -40,7 +40,7 @@
                     <div id="form-row">
                         <label for="cep">CEP</label>
                         <!-- placeholder colocado para o usuário saber o formato que deverá digitar o CNPJ/ Se houver tempo, colocar o formato de forma automática no campo -->
-                        <input type="text" id="cep" name="cep" required placeholder="00.000-000"/>
+                        <input type="text" id="cep" name="cep"/>
                         
                             <label for="inscricao-municipal">Inscrição Municipal</label>
                         <input type="text" id="inscricao-municipal" name="inscricaoMunicipal" />
@@ -85,18 +85,18 @@
         </section>
 
         <section id="produtos">
-            <div id="produtos-container"></div>
-            <button type="button" id="adicionar-produto">Adcionar Produto</button>
+            <fieldset>
+                <legend>Produtos</legend>
+                <div id="produtos-container"></div>
+                <button type="button" id="adicionar-produto">Adcionar Produto</button>
+            </fieldset>
         </section>
 
         <!-- seção de Anexos  -->
          <section id="anexos">
             <fieldset>
                 <legend>Anexos</legend>
-
-                <div class="lista-anexos">
-                    <div class="item-anexo">Documento Anexo</div>
-                </div>
+                 <div class="lista-anexos"></div>
                 <!-- botão de adc anexo  -->
                 <button type= "button" id="adicionar-anexo">Incluir Anexo</button>
             </fieldset>

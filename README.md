@@ -53,9 +53,10 @@ Este projeto foi desenvolvido como parte do processo seletivo para estágio na *
       - [x] valor total ser preenchido automaticamente a partir dos valores fornecidos de quantidade e valor unitário
   
 - Spring 2
-  - [] consumo API CEP
+  - [x] consumo API CEP
   - [x] componentizar Anexos
   - [x] criar DOM de Anexos
+  - [ ] 
   - [] estilizar pag
   
 ### Como executar

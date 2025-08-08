@@ -142,4 +142,50 @@ function renderizarListaAnexos() {
   contadorAnexos = listaDeAnexos.length + 1;
 }
 
-document.getElementById("adicionar-anexo").addEventListener("click", adicionarAnexo);
+// ===============================
+// Consumo API via CEP 
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  const cepInput = document.getElementById("cep");
+  const enderecoInput = document.getElementById("endereco");
+  const bairroInput = document.getElementById("bairro");
+  const municipioInput = document.getElementById("municipio");
+  const estadoInput = document.getElementById("estado");
+
+  const buscarEndereco = async (cep) => {
+    // remover caractéres que não sejam números
+    const cepPuro = String(cep).replace(/\D/g, "");
+    // verificar se tem 8 dígitos
+    if (cepPuro.length !== 8) {
+      return;
+    }
+
+    // consumo da API
+    const url = `https://viacep.com.br/ws/${cepPuro}/json/`;
+
+    // fetch faz a requisição
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      return;
+    }
+
+    // converter a resposta da API para Json
+    const data = await response.json();
+
+    // preencher os campos
+    enderecoInput.value = data.logradouro || "";
+    bairroInput.value = data.bairro || "";
+    municipioInput.value = data.localidade || "";
+     estadoInput.value = data.uf || "";
+  };
+
+  // chama a API após o usuário digitar 8 dígitos
+  cepInput.addEventListener("input", () => {
+   const cepLimpo = cepInput.value.replace(/\D/g, "");
+    if (cepLimpo.length === 8) {
+      buscarEndereco(cepInput.value);
+    }
+  });
+
+});
