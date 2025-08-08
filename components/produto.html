@@ -3,26 +3,28 @@
     <img src="assets/img/lixeira-icon.png" alt="Remover" class="remover-produto" style="width:24px; cursor:pointer;" />
     <img src="assets/img/produto-icon.png" alt="produto-icon" class="produto-icon" style="width:24px; cursor:pointer;" />
     <h3>Produto -</h3>
+    <div id="produto-form-row">
+        <label>Produto</label>
+        <input type="text" name="descricaoProduto" required />
+    </div>
+    <div id="produto-form-row">
+        <label>UND. Medida</label>
+        <select name="unidadeMedida" required>
+            <option value="">Selecione unidade</option>
+            <option value="un">Unidade(s)</option>
+            <option value="kg">Quilograma(s)</option>
+            <option value="l">Litro(s)</option>
+        </select>
 
-    <label>Produto</label>
-    <input type="text" name="descricaoProduto" required />
+        <label>QTD. em Estoque</label>
+        <input type="number" name="quantidade" required />
 
-    <label>UND. Medida</label>
-    <select name="unidadeMedida" required>
-        <option value="">Selecione unidade</option>
-        <option value="un">Unidade(s)</option>
-        <option value="kg">Quilograma(s)</option>
-        <option value="l">Litro(s)</option>
-    </select>
+        <label type="number">Valor Unitário</label>
+        <!-- step possibilita que o valor aceite casas decimais  -->
+        <input type="number" name="valorUnitario" step="0.01" required/>
 
-    <label>QTD. em Estoque</label>
-    <input type="number" name="quantidade" required />
-
-    <label type="number">Valor Unitário</label>
-    <!-- step possibilita que o valor aceite casas decimais  -->
-    <input type="number" name="valorUnitario" step="0.01" required/>
-
-    <label>Valor Total</label>
-    <!-- readonly possibilita que o campo não seja editável pelo usuário  -->
-    <input type="text" name="valorTotal" readonly/>
+        <label>Valor Total</label>
+        <!-- readonly possibilita que o campo não seja editável pelo usuário  -->
+        <input type="text" name="valorTotal" readonly/>
+    </div>
 </div>

@@ -1,3 +1,134 @@
+/* Reset e base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #fff;
+  padding: 20px;
+  font-size: 14px;
+  color: #111;
+}
+
+#cadastro-fornecedor-produto {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+
+h1 {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 20px;
+  letter-spacing: 0.5px;
+}
+
+
+fieldset {
+  border: 1px solid #cfcfcf;
+  border-radius: 6px;
+  padding: 14px;
+  margin-bottom: 18px;
+  background: #fff;
+}
+
+legend {
+  background-color: #0077b6;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 14px;
+  display: block;
+  width: 100%;
+}
+
+/* fazer com que cada label e input ocupem a mesma coluna  */
+#form-row,
+#produto-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 10px;
+}
+
+/* garantir que cada label ocupe a primeira linha da grid */
+#form-row > label,
+#produto-form-row > label {
+  grid-row: 1;
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+/* fazer com que todos os inpus fiquem na linha de baixo  */
+#form-row > input,
+#form-row > select,
+#produto-form-row > input,
+#produto-form-row > select {
+  grid-row: 2;
+  width: 100%;
+  padding: 6px 8px; 
+  font-size: 13px;
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
+}
+
+/* deixar o campo for readonly mais escuro */
+input[readonly] {
+  background-color: #e9e9e9;
+  color: #333;
+}
+
+.produto-unitario {
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #fff;
+}
+
+.produto-unitario h3 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+}
+
+.remover-produto,
+.remover-doc,
+.visualizar-doc {
+  cursor: pointer;
+}
+
+.item-anexo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+button {
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 4px;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  background-color: #2f8f44;
+  color: #fff;
+}
+
+button:hover {
+  opacity: 0.92;
+}
+
 .modal-loading {
   position: fixed;
   top: 40%;
@@ -7,8 +138,7 @@
   padding: 20px 30px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  font-family: sans-serif;
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
   font-size: 16px;
   z-index: 9999;
 }
