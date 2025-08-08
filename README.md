@@ -81,7 +81,7 @@ Este projeto foi desenvolvido como parte do processo seletivo para estágio na *
   - [x] botão de salvar fonecedor
   - [x] modal de loading
   - [x] estilizar pag
-  - [ ] modificar script.js para JQuery
+  - [x] modificar script.js para JQuery
   
 ## Considerações
 Durante a execução deste teste, senti que consegui consolidar melhor meus conhecimentos em manipulação de blobs, uso do sessionStorage e na dinâmica do modal de loading.
