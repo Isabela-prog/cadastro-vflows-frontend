@@ -28,11 +28,11 @@ Este projeto foi desenvolvido como parte do processo seletivo para estágio na *
     - [x] Valor Unitário (obrigatório)
     - [x] Valor Total calculado automaticamente através do valor unitário x a quantidade em estoque (obrigatório)
   
-  - [] Tabela de anexos:
-    - [] Visualização e download de arquivo selecionado (armazenado em memória - blob e session storage)
-    - [] Remoção de arquivo (doc deve ser excluído da memória)
+  - [x] Tabela de anexos:
+    - [x] Visualização e download de arquivo selecionado (armazenado em memória - blob e session storage)
+    - [x] Remoção de arquivo (doc deve ser excluído da memória)
   
-  - [] Arquivo fornecedor salvo em Json (mostrar modal de loading de envio)
+  - [] Arquivo fornecedor salvo em Json (mostrar modal de loading de envio) - download
 
 
 ## Estrutura do Projeto
@@ -56,7 +56,7 @@ Este projeto foi desenvolvido como parte do processo seletivo para estágio na *
   - [x] consumo API CEP
   - [x] componentizar Anexos
   - [x] criar DOM de Anexos
-  - [ ] 
+  - [] botão de salvar fonecedor
   - [] estilizar pag
   
 ### Como executar

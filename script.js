@@ -4,43 +4,40 @@
 let contadorProdutos = 1;
 
 async function adicionarProduto() {
-  try {
-    const response = await fetch("components/produto.html");
-    if (!response.ok) throw new Error(`Erro ao carregar componente: ${response.statusText}`);
 
-    const html = await response.text();
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = html.trim();
-    const produto = wrapper.firstElementChild;
+  const response = await fetch("components/produto.html");
+  if (!response.ok) throw new Error(`Erro ao carregar componente: ${response.statusText}`);
 
-    const titulo = produto.querySelector("h3");
-    titulo.textContent = `Produto - ${contadorProdutos}`;
+  const html = await response.text();
+  const wrapper = document.createElement("div");
+  wrapper.innerHTML = html.trim();
+  const produto = wrapper.firstElementChild;
 
-    const botaoRemover = produto.querySelector(".remover-produto");
-    botaoRemover.addEventListener("click", () => {
-      produto.remove();
-      atualizarH3Produtos();
-    });
+  const titulo = produto.querySelector("h3");
+  titulo.textContent = `Produto - ${contadorProdutos}`;
 
-    const quantidadeInput = produto.querySelector('input[name="quantidade"]');
-    const valorUnitarioInput = produto.querySelector('input[name="valorUnitario"]');
-    const valorTotalInput = produto.querySelector('input[name="valorTotal"]');
+  const botaoRemover = produto.querySelector(".remover-produto");
+  botaoRemover.addEventListener("click", () => {
+    produto.remove();
+    atualizarH3Produtos();
+  });
 
-    const atualizarValorTotal = () => {
-      const quantidade = parseFloat(quantidadeInput.value) || 0;
-      const valorUnitario = parseFloat(valorUnitarioInput.value) || 0;
-      const total = quantidade * valorUnitario;
-      valorTotalInput.value = total.toFixed(2);
-    };
+  const quantidadeInput = produto.querySelector('input[name="quantidade"]');
+  const valorUnitarioInput = produto.querySelector('input[name="valorUnitario"]');
+  const valorTotalInput = produto.querySelector('input[name="valorTotal"]');
 
-    quantidadeInput.addEventListener("input", atualizarValorTotal);
-    valorUnitarioInput.addEventListener("input", atualizarValorTotal);
+  const atualizarValorTotal = () => {
+    const quantidade = parseFloat(quantidadeInput.value) || 0;
+    const valorUnitario = parseFloat(valorUnitarioInput.value) || 0;
+    const total = quantidade * valorUnitario;
+    valorTotalInput.value = total.toFixed(2);
+  };
 
-    document.getElementById("produtos-container").appendChild(produto);
-    contadorProdutos++;
-  } catch (error) {
-    console.error("Erro ao adicionar produto:", error);
-  }
+  quantidadeInput.addEventListener("input", atualizarValorTotal);
+  valorUnitarioInput.addEventListener("input", atualizarValorTotal);
+
+  document.getElementById("produtos-container").appendChild(produto);
+  contadorProdutos++;
 }
 
 function atualizarH3Produtos() {
@@ -188,4 +185,76 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+});
+
+// ===============================
+// Gerar e baixar JSON com todos os dados
+// ===============================
+
+document.getElementById("salvar-fornecedor").addEventListener("click", () => {
+  
+  // só poderá fazer o download do JSON se houver pelo menos um anexo
+  if (listaDeAnexos.length === 0) {
+    alert("Adicione ao menos um anexo antes de salvar o fornecedor!");
+    return;
+  }
+
+  const form = document.getElementById("form-fornecedor");
+  const formData = new FormData(form);
+
+  // capturar campos do fornecedor
+  const fornecedor = {
+    razaoSocial: formData.get("razaoSocial"),
+    nomeFantasia: formData.get("nomeFantasia"),
+    cnpj: formData.get("cnpj"),
+    inscricaoEstadual: formData.get("inscricaoEstadual"),
+    inscricaoMunicipal: formData.get("inscricaoMunicipal"),
+    nomeContato: formData.get("contato"),
+    telefoneContato: formData.get("telefone"),
+    emailContato: formData.get("email")
+  };
+
+  // capturar campos do produtos
+  const produtos = [];
+  document.querySelectorAll(".produto-unitario").forEach((produtoEl, index) => {
+    produtos.push({
+      indice: index + 1,
+      descricaoProduto: produtoEl.querySelector('input[name="descricaoProduto"]').value,
+      unidadeMedida: produtoEl.querySelector('select[name="unidadeMedida"]').value,
+      qtdeEstoque: produtoEl.querySelector('input[name="quantidade"]').value,
+      valorUnitario: produtoEl.querySelector('input[name="valorUnitario"]').value,
+      valorTotal: produtoEl.querySelector('input[name="valorTotal"]').value
+    });
+  });
+
+  // captura campos do anexo, aproveitando a listaDeAnexos
+  const anexos = listaDeAnexos.map((anexo, index) => {
+    return {
+      indice: index + 1,
+      nomeArquivo: anexo.nome,
+      blobArquivo: anexo.blob.name || anexo.blob.type 
+    };
+  });
+
+  // juntar dados em um objeto final
+  const dadosFinal = {
+    ...fornecedor,
+    produtos,
+    anexos
+  };
+
+  // baixar arq Json
+  // converter o objeto em string JSON
+  const jsonString = JSON.stringify(dadosFinal, null, 2); 
+  // criar um blob
+  const blob = new Blob([jsonString], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `fornecedor_${fornecedor.razaoSocial || "dados"}.json`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 });
