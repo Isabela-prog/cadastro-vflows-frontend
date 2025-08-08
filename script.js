@@ -83,15 +83,20 @@ botaoAdicionarAnexo.addEventListener('click', () => {
     const arquivo = event.target.files[0];
     if (!arquivo) return;
 
-    // adicionar o arq na lista memória
-    listaDeAnexos.push({
-      id: Date.now(),
-      nome: arquivo.name,
-      blob: arquivo
-    });
+    // salvar arq na lista e já converter para base64
+    const reader = new FileReader();
+    reader.onload = () => {
+      listaDeAnexos.push({
+        id: Date.now(),
+        nome: arquivo.name,
+        blob: arquivo,
+        base64: reader.result // já salva o base64 aqui!
+      });
 
     //salvarAnexosNoSessionStorage();
     renderizarListaAnexos();
+    };
+    reader.readAsDataURL(arquivo);
   });
 
   // fazer a janela de escolha do arq aparecer
@@ -232,7 +237,7 @@ document.getElementById("salvar-fornecedor").addEventListener("click", () => {
     return {
       indice: index + 1,
       nomeArquivo: anexo.nome,
-      blobArquivo: anexo.blob.name || anexo.blob.type 
+      blobArquivo: anexo.base64
     };
   });
 
