@@ -1,0 +1,18 @@
+.modal-loading {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 20px 30px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  font-family: sans-serif;
+  font-size: 16px;
+  z-index: 9999;
+}
+
+.modal-loading.hidden {
+  display: none;
+}

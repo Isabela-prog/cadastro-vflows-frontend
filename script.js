@@ -204,62 +204,79 @@ document.getElementById("salvar-fornecedor").addEventListener("click", () => {
     return;
   }
 
-  const form = document.getElementById("form-fornecedor");
-  const formData = new FormData(form);
+  // dar inicio ao modal
+  mostrarModalLoading();
 
-  // capturar campos do fornecedor
-  const fornecedor = {
-    razaoSocial: formData.get("razaoSocial"),
-    nomeFantasia: formData.get("nomeFantasia"),
-    cnpj: formData.get("cnpj"),
-    inscricaoEstadual: formData.get("inscricaoEstadual"),
-    inscricaoMunicipal: formData.get("inscricaoMunicipal"),
-    nomeContato: formData.get("contato"),
-    telefoneContato: formData.get("telefone"),
-    emailContato: formData.get("email")
-  };
+  // para dar tempo do modal aparecer antes do download ser feito
+  setTimeout(() => {
+    const form = document.getElementById("form-fornecedor");
+    const formData = new FormData(form);
 
-  // capturar campos do produtos
-  const produtos = [];
-  document.querySelectorAll(".produto-unitario").forEach((produtoEl, index) => {
-    produtos.push({
-      indice: index + 1,
-      descricaoProduto: produtoEl.querySelector('input[name="descricaoProduto"]').value,
-      unidadeMedida: produtoEl.querySelector('select[name="unidadeMedida"]').value,
-      qtdeEstoque: produtoEl.querySelector('input[name="quantidade"]').value,
-      valorUnitario: produtoEl.querySelector('input[name="valorUnitario"]').value,
-      valorTotal: produtoEl.querySelector('input[name="valorTotal"]').value
-    });
-  });
-
-  // captura campos do anexo, aproveitando a listaDeAnexos
-  const anexos = listaDeAnexos.map((anexo, index) => {
-    return {
-      indice: index + 1,
-      nomeArquivo: anexo.nome,
-      blobArquivo: anexo.base64
+    // capturar campos do fornecedor
+    const fornecedor = {
+      razaoSocial: formData.get("razaoSocial"),
+      nomeFantasia: formData.get("nomeFantasia"),
+      cnpj: formData.get("cnpj"),
+      inscricaoEstadual: formData.get("inscricaoEstadual"),
+      inscricaoMunicipal: formData.get("inscricaoMunicipal"),
+      nomeContato: formData.get("contato"),
+      telefoneContato: formData.get("telefone"),
+      emailContato: formData.get("email")
     };
-  });
 
-  // juntar dados em um objeto final
-  const dadosFinal = {
-    ...fornecedor,
-    produtos,
-    anexos
-  };
+    // capturar campos do produtos
+    const produtos = [];
+    document.querySelectorAll(".produto-unitario").forEach((produtoEl, index) => {
+      produtos.push({
+        indice: index + 1,
+        descricaoProduto: produtoEl.querySelector('input[name="descricaoProduto"]').value,
+        unidadeMedida: produtoEl.querySelector('select[name="unidadeMedida"]').value,
+        qtdeEstoque: produtoEl.querySelector('input[name="quantidade"]').value,
+        valorUnitario: produtoEl.querySelector('input[name="valorUnitario"]').value,
+        valorTotal: produtoEl.querySelector('input[name="valorTotal"]').value
+      });
+    });
 
-  // baixar arq Json
-  // converter o objeto em string JSON
-  const jsonString = JSON.stringify(dadosFinal, null, 2); 
-  // criar um blob
-  const blob = new Blob([jsonString], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
+    // captura campos do anexo, aproveitando a listaDeAnexos
+    const anexos = listaDeAnexos.map((anexo, index) => {
+      return {
+        indice: index + 1,
+        nomeArquivo: anexo.nome,
+        blobArquivo: anexo.base64
+      };
+    });
 
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `fornecedor_${fornecedor.razaoSocial || "dados"}.json`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+    // juntar dados em um objeto final
+    const dadosFinal = {
+      ...fornecedor,
+      produtos,
+      anexos
+    };
+
+    // baixar arq Json
+    // converter o objeto em string JSON
+    const jsonString = JSON.stringify(dadosFinal, null, 2); 
+    // criar um blob
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `fornecedor_${fornecedor.razaoSocial || "dados"}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    esconderModalLoading();
+  }, 500);
 });
+
+
+function mostrarModalLoading() {
+  document.getElementById("modal-loading").classList.remove("hidden");
+}
+
+function esconderModalLoading() {
+  document.getElementById("modal-loading").classList.add("hidden");
+}

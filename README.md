@@ -56,7 +56,8 @@ Este projeto foi desenvolvido como parte do processo seletivo para estágio na *
   - [x] consumo API CEP
   - [x] componentizar Anexos
   - [x] criar DOM de Anexos
-  - [] botão de salvar fonecedor
+  - [x] botão de salvar fonecedor
+  - [x] modal de loading
   - [] estilizar pag
   
 ### Como executar
